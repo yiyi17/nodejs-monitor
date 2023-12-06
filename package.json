@@ -1,8 +1,15 @@
 {
-  "name": "nodejs-monitor",
+  "name": "@pvjs/nodejs-monitor",
   "version": "0.0.1",
   "description": "",
-  "keywords": [],
+  "keywords": [
+    "nodejs",
+    "monitor"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "MIT",
   "author": "地铁程序员",
   "main": "dist/index.js",
@@ -25,7 +32,8 @@
     "node": "<=16.x.x"
   },
   "devDependencies": {
-    "@types/request": "^2.48.12"
+    "@types/request": "^2.48.12",
+    "father": "^4.3.7"
   },
   "homepage": "https://github.com/yiyi17/nodejs-monitor/blob/main/README.md",
   "repository": {
