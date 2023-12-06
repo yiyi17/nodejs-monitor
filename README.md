@@ -33,12 +33,12 @@ memoryMonitor({
 // 性能看板.cpuprofile
 getV8Profile({
   TIME: 3 * 60 * 1000, // 收集 v8Profile 时长。默认 3 分钟
-  STATIC_PATH: "<root>/public", // 文件存储的路径，会存在服务中, 默认 join(process.cwd(), '../public')
+  STATIC_PATH: '<root>/public', // 文件存储的路径，会存在服务中, 默认 join(process.cwd(), '../public')
 });
 
 // 内存快照
 getHeapSnapshot({
-  STATIC_PATH: "<root>/public", // 文件存储的路径，会存在服务中, 默认 join(process.cwd(), '../public')
+  STATIC_PATH: '<root>/public', // 文件存储的路径，会存在服务中, 默认 join(process.cwd(), '../public')
 });
 ```
 
@@ -56,8 +56,7 @@ getHeapSnapshot({
 
 ### 示例
 
-[profile](./public/profile.png)
-[profile flame](./public/profile-flame.png)
+[profile](./public/profile.png) [profile flame](./public/profile-flame.png)
 
 ## heapSnapshot 使用
 
@@ -113,25 +112,6 @@ getHeapSnapshot({
 - gcProcessWeakCallbacksTime: 24542, gc 进程弱回调时间
 - gc_time: 3474250 gc 时间
 
-## 材料参考
+## 更多材料
 
-[Nodejs 调试指南](https://zhuanlan.zhihu.com/p/111575781)
-
-[Node.js 中扩展内存那些事](https://blackmatch.github.io/2019/06/10/nodejs-extend-memory.html)
-
-[v8.getHeapStatistics()](https://nodejs.org/api/v8.html#v8_v8_getheapstatistics)
-
-[nodejs 内存监控 1-监控方案](https://juejin.cn/post/6967931027658375199)
-
-[一文了解 Node.js 性能监控](https://juejin.cn/post/7130162638922711071)
-
-[NodeJs 中内存机制](https://blog.csdn.net/weixin_37989623/article/details/106243181)
-
-[《深入浅出 Node.js》-内存控制](https://lz5z.com/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BANode-js-%E5%86%85%E5%AD%98%E6%8E%A7%E5%88%B6/)
-
-[node-v8 堆内存分析](https://juejin.cn/post/6978395749784485896)
-
-[heap_size_limit 默认是总系统内存的一半](https://www.php.cn/faq/504543.html)
-[一个 node 诊断的仓库](https://github.com/nodejs/diagnostics)
-
-[ v8-profiler-node8](https://www.npmjs.com/package/v8-profiler-node8) 生成 json 后，使用 [speedscope](https://www.speedscope.app/) 加载解析生成火焰图
+[Nodejs APM 监控](https://zhuanlan.zhihu.com/p/670656224)
