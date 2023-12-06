@@ -4,7 +4,7 @@
   "description": "",
   "keywords": [],
   "license": "ISC",
-  "author": "",
+  "author": "地铁程序员",
   "main": "dist/index.js",
   "files": [
     "dist",
@@ -23,5 +23,13 @@
   },
   "devDependencies": {
     "@types/request": "^2.48.12"
+  },
+  "homepage": "https://github.com/yiyi17/nodejs-monitor/blob/main/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yiyi17/nodejs-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yiyi17/nodejs-monitor/issues"
   }
 }
