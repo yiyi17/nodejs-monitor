@@ -13,7 +13,7 @@ import {
   memoryMonitor
   getV8Profile,
   getHeapSnapshot
-} from '@msfe/node-monitor';
+} from '@pvjs/nodejs-monitor';
 
 // 内存、gc 监控
 memoryMonitor({
