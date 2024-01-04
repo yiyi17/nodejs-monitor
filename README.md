@@ -2,6 +2,9 @@
 
 nodejs APM 服务监控
 
+如果 node <= 16 使用 0.0.x 版本的 https://www.npmjs.com/package/@pvjs/nodejs-monitor/v/0.0.2
+如果 node >= 18 使用 1.x.x 版本的 https://www.npmjs.com/package/@pvjs/nodejs-monitor?activeTab=readme
+
 ## 快速开始
 
 参数均为非必传，未传入则使用默认值
