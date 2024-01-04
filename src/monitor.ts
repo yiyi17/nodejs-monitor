@@ -1,75 +1,82 @@
 import * as fs from 'fs';
-import memwatch from 'node-memwatch-new';
 import * as os from 'os';
 import { join } from 'path';
 import * as v8 from 'v8';
 import v8Profiler from 'v8-profiler-next';
 import { NodejsMonitorOptions, ReporterData, ReporterOptions } from './types';
-import { byteToMegabytes, nsToMs } from './utils';
+import { byteToMegabytes } from './utils';
+import { PerformanceObserver, constants } from 'perf_hooks';
 
 const CPUPROFILE_TITLE = 'main.cpuprofile';
 const STATIC_PATH_DEFAULT = join(process.cwd(), './dist/public/');
 const PROFILE_TIME_DEFAULT = 3 * 60 * 1000;
 
-export function gcMonitor(
-  reporter: (arg0: ReporterData, arg1: ReporterOptions) => void
-): void {
-  memwatch.on('stats', function (stats: any) {
-    const {
-      gc_ts,
-      gc_time,
-      gcScavengeCount,
-      gcScavengeTime,
-      gcMarkSweepCompactCount,
-      gcMarkSweepCompactTime,
-      gcIncrementalMarkingCount,
-      gcIncrementalMarkingTime,
-      gcProcessWeakCallbacksCount,
-      gcProcessWeakCallbacksTime
-    } = stats;
+export function gcMonitor({
+  reporter,
+  debug = true
+}: {
+  reporter: (arg0: ReporterData, arg1: ReporterOptions) => void;
+  debug?: boolean;
+}) {
+  // accumulative statistic data
+  const statData = {
+    gcScavengeCount: 0,
+    gcScavengeTime: 0,
+    gcMarkSweepCompactCount: 0,
+    gcMarkSweepCompactTime: 0,
+    gcIncrementalMarkingCount: 0,
+    gcIncrementalMarkingTime: 0,
+    gcProcessWeakCallbacksCount: 0,
+    gcProcessWeakCallbacksTime: 0
+  };
+  const getDetailKeysName: (theKind: number) => (keyof typeof statData)[] = (
+    theKind
+  ) => {
+    switch (theKind) {
+      case constants.NODE_PERFORMANCE_GC_MINOR:
+        return ['gcScavengeCount', 'gcScavengeTime'];
+      case constants.NODE_PERFORMANCE_GC_MAJOR:
+        return ['gcMarkSweepCompactCount', 'gcMarkSweepCompactTime'];
+      case constants.NODE_PERFORMANCE_GC_INCREMENTAL:
+        return ['gcIncrementalMarkingCount', 'gcIncrementalMarkingTime'];
+      case constants.NODE_PERFORMANCE_GC_WEAKCB:
+        return ['gcProcessWeakCallbacksCount', 'gcProcessWeakCallbacksTime'];
+    }
+    return [];
+  };
 
+  const obs = new PerformanceObserver((entryList) => {
+    const entry = entryList.getEntries()[0];
+    const { duration, startTime } = entry;
+    const { kind, flag } = entry.detail as any;
+    const [countKey, durationKey] = getDetailKeysName(kind);
+    statData[countKey] += 1;
+    statData[durationKey] += duration;
+    const submitData = {
+      gc_ts: Date.now(),
+      gc_start_time: startTime,
+      gc_time: duration,
+      ...statData
+    };
     reporter(
       {
         type: 'nodejs_monitor_gc',
         base: {
           env: process.env.ZAE_ENV || 'local',
           platform: 'nodejs',
-          project: process.env.ZAE_APP_NAME || 'nodejs-local'
+          project: (process.env.ZAE_UNIT_NAME || 'nodejs-local') + '--native'
         },
-        data: {
-          gc_ts: Math.floor(gc_ts / 1000),
-          gc_time: nsToMs(gc_time),
-          gcScavengeCount,
-          gcScavengeTime: nsToMs(gcScavengeTime),
-          gcMarkSweepCompactCount,
-          gcMarkSweepCompactTime: nsToMs(gcMarkSweepCompactTime),
-          gcIncrementalMarkingCount,
-          gcIncrementalMarkingTime: nsToMs(gcIncrementalMarkingTime),
-          gcProcessWeakCallbacksCount,
-          gcProcessWeakCallbacksTime: nsToMs(gcProcessWeakCallbacksTime)
-        }
+        data: submitData
       },
       {
-        dev: process.env.NODE_ENV === 'local'
+        dev: debug
       }
     );
   });
 
-  // 这个 info 类似于这个数据结构
-  /**
-     * {  start: Fri, 29 Jun 2012 14:12:13 GMT,
-          end: Fri, 29 Jun 2012 14:12:33 GMT,
-          growth: 67984,
-          reason: 'heap growth over 5 consecutive GCs (20s) - 11.67 mb/hr' 
-       }
-     */
-  // 如果经过连续的5次垃圾回收后，内存仍没有被释放，意味有内存泄漏，node-memwatch会触发leak事件。
-  memwatch.on('leak', function (info: any) {
-    // eslint-disable-next-line no-console
-    console.log('leak:');
-    // eslint-disable-next-line no-console
-    console.log(info);
-  });
+  obs.observe({ entryTypes: ['gc'], buffered: false });
+
+  return () => obs.disconnect();
 }
 
 export function memoryMonitor(
@@ -111,7 +118,7 @@ export function memoryMonitor(
         base: {
           env: process.env.ZAE_ENV || 'local',
           platform: 'nodejs',
-          project: process.env.ZAE_APP_NAME || 'nodejs-local'
+          project: (process.env.ZAE_UNIT_NAME || 'nodejs-local') + '--native'
         },
         data
       },
@@ -194,7 +201,7 @@ export async function getV8Profile(
   } else {
     v8ProfileFn();
   }
-  return `${STATIC_PATH}${CPUPROFILE_TITLE} `;
+  return `${STATIC_PATH}${CPUPROFILE_TITLE}`;
 }
 
 export function getHeapSnapshot(
