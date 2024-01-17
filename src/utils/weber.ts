@@ -6,6 +6,8 @@ export default function postWeberJSON(
   options?: ReporterOptions
 ): void {
   const { dev } = options || {};
+  
+  // FIXME:
   console.log("需要配置上报的接口");
 
   let url = dev ? "" : "";

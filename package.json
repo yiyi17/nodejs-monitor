@@ -20,7 +20,9 @@
     "public"
   ],
   "scripts": {
+    "install": "cd src/utils/nodejs-native-gc-load && node-gyp rebuild",
     "build": "father build",
+    "dev": "father dev",
     "prepublish": "pnpm run build",
     "publish": "npm publish --access public",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,13 +1,14 @@
 import {
   gcMonitor,
   getHeapSnapshot,
-  getV8Profile,
   memoryMonitor as memoryMonitorFn,
-} from "./monitor";
+} from "./utils/memory-monitor";
+import {getV8Profile} from './utils/profile-monitor'
 import { NodejsMonitorOptions } from "./types";
 import postWeberJSON from "./utils/weber";
 
-export * from "./monitor";
+export * from  "./utils/memory-monitor";
+export * from './utils/profile-monitor';
 export * from "./types";
 export * from "./utils/weber";
 
@@ -16,7 +17,7 @@ export function memoryMonitor(
 ): void {
   const { reporter = postWeberJSON } = options || {};
   memoryMonitorFn(reporter); // 内存监控
-  gcMonitor(reporter);
+  gcMonitor({reporter});
 }
 
 // TODO:一行代码进行监控,开发中
