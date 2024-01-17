@@ -12,8 +12,8 @@ dependencies:
     specifier: ^2.88.2
     version: 2.88.2
   v8-profiler-next:
-    specifier: ^1.9.0
-    version: 1.9.0
+    specifier: ^1.10.0
+    version: 1.10.0
 
 devDependencies:
   '@types/request':
@@ -7765,8 +7765,8 @@ packages:
     resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==}
     dev: true
 
-  /v8-profiler-next@1.9.0:
-    resolution: {integrity: sha512-+k2Lb0c9lEDsGNT1GfrrlV4evR2KsF3LljW8PUfRaM1OQmr+F3lXGxVIffa+LNXaw3CnwdsSdqI2zaYEhDdu5Q==}
+  /v8-profiler-next@1.10.0:
+    resolution: {integrity: sha512-HME7CR3V8gkBEAutcMyGS0vK0XH2hFQhF5SvSdrF/mdjWIGoaiY+WH3RpY7ePY7J7vNDbQfP+Ikefdi1z/mJXg==}
     requiresBuild: true
     dependencies:
       '@xprofiler/node-pre-gyp': 1.0.11

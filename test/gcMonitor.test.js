@@ -1,9 +1,9 @@
 const {gcMonitor} = require('../dist/utils/memory-monitor')
 
 function makeArray() {
-  const arr = []
-  for(let i = 0; i < 100000; i++) {
-    arr.push(arr)
+  const arr = [0]
+  for(let i = 0; i < 30000000; i++) {
+    arr.push(1)
   }
   return arr
 }
