@@ -38,7 +38,7 @@
   "devDependencies": {
     "@types/request": "^2.48.12",
     "father": "^4.3.7",
-    "lerna": "^8.0.0"
+    "lerna": "^10.0.0"
   },
   "homepage": "https://github.com/yiyi17/nodejs-monitor/blob/main/README.md",
   "repository": {
